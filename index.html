@@ -1,0 +1,1531 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کتاب باز | مرکز هنر من</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #d4af37;
+            --accent-glow: rgba(212, 175, 55, 0.4);
+            --border: #333333;
+            --input-bg: #252525;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        body.light-mode {
+            --bg-color: #f5f5f7;
+            --card-bg: #ffffff;
+            --text-main: #1c1c1e;
+            --text-secondary: #6e6e73;
+            --accent: #b8962e;
+            --accent-glow: rgba(184, 150, 46, 0.2);
+            --border: #d1d1d6;
+            --input-bg: #f9f9f9;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Tahoma', 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .header-title h1 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin: 0;
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .menu-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-btn:hover {
+            background: var(--input-bg);
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 200px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 100;
+            animation: slideDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .dropdown-menu.active {
+            display: flex;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .dropdown-item {
+            padding: 12px 15px;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dropdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background: var(--accent-glow);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .dropdown-item:hover::before {
+            width: 100%;
+        }
+
+        .dropdown-item:hover {
+            color: var(--accent);
+            transform: translateX(-5px);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 5px 0;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-section:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-pic-container {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--accent);
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px var(--accent-glow);
+            transition: all 0.3s ease;
+        }
+
+        .profile-pic-container:hover {
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        .profile-pic-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .profile-pic-container i {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .profile-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .search-and-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--text-main);
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: scale(1.02);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .search-box input:focus + i {
+            color: var(--accent);
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn:hover::after {
+            transform: scaleX(1);
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            font-weight: bold;
+            box-shadow: 0 5px 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            animation: fadeInUp 0.7s ease-out;
+        }
+
+        .stats-bar span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stats-bar i {
+            color: var(--accent);
+        }
+
+        .input-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.7s ease-out;
+        }
+
+        .input-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        button#add-btn {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button#add-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button#add-btn:hover::before {
+            left: 100%;
+        }
+
+        button#add-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px var(--accent-glow);
+        }
+
+        .notes-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .note-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border-right: 4px solid var(--accent);
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardEntrance 0.5s forwards;
+            position: relative;
+        }
+
+        @keyframes cardEntrance {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            border-right-color: #fff;
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .note-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .note-title i {
+            color: var(--accent);
+            transition: transform 0.3s;
+        }
+
+        .note-card:hover .note-title i {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .tag:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px var(--accent-glow);
+        }
+
+        .note-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .note-card:hover .note-desc {
+            color: var(--text-main);
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            padding: 5px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .delete-btn:hover {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            transform: scale(1.1);
+        }
+
+        .rating-container {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .star {
+            color: #555;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .star.active {
+            color: #f1c40f;
+            text-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
+        }
+
+        .star:hover {
+            transform: scale(1.3);
+            color: #f39c12;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 40px;
+            font-style: italic;
+            animation: fadeIn 1s ease;
+        }
+        
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--border);
+            display: block;
+            transition: transform 0.5s;
+        }
+
+        .empty-state:hover i {
+            transform: rotate(360deg);
+            color: var(--accent);
+        }
+
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            border: 1px solid var(--border);
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            margin-bottom: 25px;
+            color: var(--text-main);
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .preview-pic {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-color: var(--input-bg);
+            border: 2px dashed var(--border);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .preview-pic:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: rotate(5deg);
+        }
+
+        .preview-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .preview-pic i {
+            font-size: 2.5rem;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .preview-pic:hover i {
+            color: var(--accent);
+        }
+
+        .modal-input {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .modal-input label {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .modal-input input {
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-save {
+            flex: 1;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px var(--accent-glow);
+        }
+
+        .btn-save:hover {
+            background: #b8962e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-main);
+            background: rgba(255,255,255,0.05);
+        }
+
+        #profile-upload {
+            display: none;
+        }
+
+        #pdf-container {
+            display: none;
+        }
+
+        /* دکمه‌های کناری کارت */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .note-card:hover .card-actions {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .action-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px var(--accent-glow);
+        }
+
+        .action-btn.delete:hover {
+            background: #ff6b6b;
+            box-shadow: 0 3px 8px rgba(255, 107, 107, 0.4);
+        }
+
+        /* دکمه بازگشت از حالت مطالعه */
+        .back-to-main-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--accent);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        .back-to-main-btn:hover {
+            transform: scale(1.1) translateY(0);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        body.read-only .back-to-main-btn {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        /* انیمیشن جایگزینی (فقط برای نمایش زیبا، بدون حذف آیتم‌ها) */
+        .fade-out {
+            animation: fadeOut 0.3s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* حالت مطالعه */
+        body.read-only .input-section,
+        body.read-only .tabs,
+        body.read-only .search-box,
+        body.read-only .stats-bar {
+            display: none !important;
+        }
+        
+        body.read-only .note-card {
+            border-right: none;
+            box-shadow: none;
+            border: 1px solid var(--border);
+            transform: none !important;
+        }
+
+        body.read-only .note-card:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        body.read-only .card-actions {
+            display: none !important;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="header-title">
+                <h1><i class="fas fa-theater-masks"></i> کتاب باز</h1>
+            </div>
+            
+            <div class="search-box" style="flex: 1; max-width: 400px; margin: 0 20px;">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="جستجو در عنوان یا تگ‌ها..." oninput="filterItems()">
+            </div>
+
+            <div class="header-right">
+                <button class="menu-btn" onclick="toggleMenu()" title="منو">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+
+                <div class="dropdown-menu" id="main-menu">
+                    <div class="dropdown-item" onclick="openProfileModal()">
+                        <i class="fas fa-user-cog"></i>
+                        <span>تنظیمات پروفایل</span>
+                    </div>
+                    <div class="dropdown-item" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="theme-icon"></i>
+                        <span id="theme-text">تغییر تم</span>
+                    </div>
+                    <div class="dropdown-item" onclick="toggleReadOnly()">
+                        <i class="fas fa-eye" id="readonly-icon"></i>
+                        <span id="readonly-text">حالت مطالعه</span>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item" onclick="exportPDF()">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>دانلود PDF</span>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-pic-container">
+                        <img id="profile-img" src="" alt="پروفایل">
+                        <i class="fas fa-user" id="profile-icon"></i>
+                    </div>
+                    <div class="profile-info">
+                        <span class="profile-name" id="display-name">کاربر مهمان</span>
+                        <span class="profile-role">هنردوست</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="search-and-tabs">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('books')">
+                    <i class="fas fa-book"></i> کتاب
+                </button>
+                <button class="tab-btn" onclick="switchTab('movies')">
+                    <i class="fas fa-film"></i> فیلم
+                </button>
+                <button class="tab-btn" onclick="switchTab('theater')">
+                    <i class="fas fa-theater-masks"></i> تئاتر
+                </button>
+            </div>
+        </div>
+
+        <div id="books-section" class="content-section active">
+            <div class="stats-bar" id="books-stats">
+                <span><i class="fas fa-list"></i> <span id="books-count">0</span> آیتم</span>
+                <span><i class="fas fa-star"></i> میانگین: <span id="books-avg">0</span></span>
+            </div>
+            
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="book-title">عنوان کتاب</label>
+                    <input type="text" id="book-title" placeholder="نام کتاب..." oninput="autoSave('book')">
+                </div>
+                <div class="input-group">
+                    <label for="book-tags">تگ‌ها (با کاما جدا کنید)</label>
+                    <input type="text" id="book-tags" placeholder="مثال: رمان, عاشقانه, کلاسیک" oninput="autoSave('book')">
+                </div>
+                <div class="input-group">
+                    <label for="book-desc">یادداشت‌ها</label>
+                    <textarea id="book-desc" placeholder="تحلیل و حس خود را بنویسید..." oninput="autoSave('book')"></textarea>
+                </div>
+                <button id="add-btn" onclick="addItem('books')">
+                    <i class="fas fa-plus"></i> افزودن
+                </button>
+            </div>
+            
+            <div id="books-tags-container" class="tags-container" style="margin-bottom: 10px; justify-content: center;"></div>
+            
+            <div id="books-list" class="notes-list"></div>
+        </div>
+
+        <div id="movies-section" class="content-section">
+            <div class="stats-bar" id="movies-stats">
+                <span><i class="fas fa-list"></i> <span id="movies-count">0</span> آیتم</span>
+                <span><i class="fas fa-star"></i> میانگین: <span id="movies-avg">0</span></span>
+            </div>
+            
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="movie-title">نام فیلم</label>
+                    <input type="text" id="movie-title" placeholder="نام فیلم..." oninput="autoSave('movie')">
+                </div>
+                <div class="input-group">
+                    <label for="movie-tags">تگ‌ها (با کاما جدا کنید)</label>
+                    <input type="text" id="movie-tags" placeholder="مثال: اکشن, علمی تخیلی" oninput="autoSave('movie')">
+                </div>
+                <div class="input-group">
+                    <label for="movie-desc">نقد و بررسی</label>
+                    <textarea id="movie-desc" placeholder="درباره فیلم چه فکری کردید؟" oninput="autoSave('movie')"></textarea>
+                </div>
+                <button id="add-btn" onclick="addItem('movies')">
+                    <i class="fas fa-plus"></i> افزودن
+                </button>
+            </div>
+            
+            <div id="movies-tags-container" class="tags-container" style="margin-bottom: 10px; justify-content: center;"></div>
+            
+            <div id="movies-list" class="notes-list"></div>
+        </div>
+
+        <div id="theater-section" class="content-section">
+            <div class="stats-bar" id="theater-stats">
+                <span><i class="fas fa-list"></i> <span id="theater-count">0</span> آیتم</span>
+                <span><i class="fas fa-star"></i> میانگین: <span id="theater-avg">0</span></span>
+            </div>
+            
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="theater-title">نام نمایش</label>
+                    <input type="text" id="theater-title" placeholder="نام نمایش..." oninput="autoSave('theater')">
+                </div>
+                <div class="input-group">
+                    <label for="theater-tags">تگ‌ها (با کاما جدا کنید)</label>
+                    <input type="text" id="theater-tags" placeholder="مثال: درام, کمدی" oninput="autoSave('theater')">
+                </div>
+                <div class="input-group">
+                    <label for="theater-desc">یادداشت‌های تئاتر</label>
+                    <textarea id="theater-desc" placeholder="بازیگران، کارگردان و حس شما..." oninput="autoSave('theater')"></textarea>
+                </div>
+                <button id="add-btn" onclick="addItem('theater')">
+                    <i class="fas fa-plus"></i> افزودن
+                </button>
+            </div>
+            
+            <div id="theater-tags-container" class="tags-container" style="margin-bottom: 10px; justify-content: center;"></div>
+            
+            <div id="theater-list" class="notes-list"></div>
+        </div>
+
+    </div>
+
+    <!-- دکمه بازگشت از حالت مطالعه -->
+    <div class="back-to-main-btn" onclick="toggleReadOnly()" title="بازگشت به حالت اصلی">
+        <i class="fas fa-arrow-left"></i>
+    </div>
+
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">تنظیمات پروفایل</div>
+            
+            <div class="preview-pic" onclick="document.getElementById('profile-upload').click()">
+                <img id="modal-img-preview" src="" alt="پیش‌نمایش">
+                <i class="fas fa-camera" id="modal-icon-preview"></i>
+            </div>
+            <input type="file" id="profile-upload" accept="image/*" onchange="previewImage(event)">
+
+            <div class="modal-input">
+                <label for="modal-name-input">نام شما</label>
+                <input type="text" id="modal-name-input" placeholder="نام خود را وارد کنید...">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeProfileModal()">انصراف</button>
+                <button class="btn-save" onclick="saveProfile()">ذخیره</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pdf-container"></div>
+
+    <script>
+        const profileImg = document.getElementById('profile-img');
+        const profileIcon = document.getElementById('profile-icon');
+        const displayName = document.getElementById('display-name');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const body = document.body;
+        
+        const menuBtn = document.querySelector('.menu-btn');
+        const dropdownMenu = document.getElementById('main-menu');
+        const modal = document.getElementById('profile-modal');
+        const modalImgPreview = document.getElementById('modal-img-preview');
+        const modalIconPreview = document.getElementById('modal-icon-preview');
+        const modalNameInput = document.getElementById('modal-name-input');
+        const profileUpload = document.getElementById('profile-upload');
+
+        // Auto-save keys
+        const autoSaveKeys = {
+            'book': 'bookDraft',
+            'movie': 'movieDraft',
+            'theater': 'theaterDraft'
+        };
+
+        document.addEventListener('click', function(event) {
+            if (!menuBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove('active');
+            }
+        });
+
+        function toggleMenu() {
+            dropdownMenu.classList.toggle('active');
+        }
+
+        function toggleTheme() {
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
+            themeIcon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+            themeText.innerText = isLight ? 'تغییر به حالت شب' : 'تغییر به حالت روز';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            dropdownMenu.classList.remove('active');
+        }
+
+        function toggleReadOnly() {
+            body.classList.toggle('read-only');
+            const isReadOnly = body.classList.contains('read-only');
+            const icon = document.getElementById('readonly-icon');
+            const text = document.getElementById('readonly-text');
+            
+            if (isReadOnly) {
+                icon.className = 'fas fa-eye-slash';
+                text.innerText = 'خروج از حالت مطالعه';
+            } else {
+                icon.className = 'fas fa-eye';
+                text.innerText = 'حالت مطالعه';
+            }
+            dropdownMenu.classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-mode');
+                themeIcon.className = 'fas fa-sun';
+                themeText.innerText = 'تغییر به حالت شب';
+            }
+            loadProfile();
+            loadAutoSave();
+            loadItems('books', 'books-list');
+            loadItems('movies', 'movies-list');
+            loadItems('theater', 'theater-list');
+            updateStats('books');
+            updateStats('movies');
+            updateStats('theater');
+            showPopularTags('books');
+            showPopularTags('movies');
+            showPopularTags('theater');
+        });
+
+        function loadAutoSave() {
+            for (const [key, storageKey] of Object.entries(autoSaveKeys)) {
+                const savedTitle = localStorage.getItem(storageKey + '-title');
+                const savedTags = localStorage.getItem(storageKey + '-tags');
+                const savedDesc = localStorage.getItem(storageKey + '-desc');
+                
+                if (savedTitle) document.getElementById(key + '-title').value = savedTitle;
+                if (savedTags) document.getElementById(key + '-tags').value = savedTags;
+                if (savedDesc) document.getElementById(key + '-desc').value = savedDesc;
+            }
+        }
+
+        function autoSave(type) {
+            const title = document.getElementById(type + '-title').value;
+            const tags = document.getElementById(type + '-tags').value;
+            const desc = document.getElementById(type + '-desc').value;
+            
+            localStorage.setItem(autoSaveKeys[type] + '-title', title);
+            localStorage.setItem(autoSaveKeys[type] + '-tags', tags);
+            localStorage.setItem(autoSaveKeys[type] + '-desc', desc);
+        }
+
+        function openProfileModal() {
+            modalNameInput.value = localStorage.getItem('profileName') || '';
+            const savedImage = localStorage.getItem('profileImage');
+            if (savedImage) {
+                modalImgPreview.src = savedImage;
+                modalImgPreview.style.display = 'block';
+                modalIconPreview.style.display = 'none';
+            } else {
+                modalImgPreview.style.display = 'none';
+                modalIconPreview.style.display = 'block';
+            }
+            modal.classList.add('active');
+            dropdownMenu.classList.remove('active');
+        }
+
+        function closeProfileModal() {
+            modal.classList.remove('active');
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    modalImgPreview.src = e.target.result;
+                    modalImgPreview.style.display = 'block';
+                    modalIconPreview.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveProfile() {
+            const name = modalNameInput.value.trim();
+            const imageSrc = modalImgPreview.src;
+            const hasImage = modalImgPreview.style.display === 'block';
+
+            if (name) {
+                localStorage.setItem('profileName', name);
+                displayName.innerText = name;
+            }
+
+            if (hasImage) {
+                localStorage.setItem('profileImage', imageSrc);
+                profileImg.src = imageSrc;
+                profileImg.style.display = 'block';
+                profileIcon.style.display = 'none';
+            }
+
+            closeProfileModal();
+            alert('تنظیمات با موفقیت ذخیره شد! 😊');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabName + '-section').classList.add('active');
+            document.querySelector(`.tab-btn[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            
+            document.getElementById('search-input').value = '';
+            filterItems();
+            loadAutoSave(); // Restore draft when switching tabs
+        }
+
+        function addItem(type) {
+            let titleInput, tagsInput, descInput, listContainer;
+            if (type === 'books') { titleInput = document.getElementById('book-title'); tagsInput = document.getElementById('book-tags'); descInput = document.getElementById('book-desc'); listContainer = document.getElementById('books-list'); }
+            else if (type === 'movies') { titleInput = document.getElementById('movie-title'); tagsInput = document.getElementById('movie-tags'); descInput = document.getElementById('movie-desc'); listContainer = document.getElementById('movies-list'); }
+            else if (type === 'theater') { titleInput = document.getElementById('theater-title'); tagsInput = document.getElementById('theater-tags'); descInput = document.getElementById('theater-desc'); listContainer = document.getElementById('theater-list'); }
+
+            const title = titleInput.value.trim();
+            const tagsRaw = tagsInput.value.trim();
+            const desc = descInput.value.trim();
+
+            if (!title || !desc) { alert('لطفاً عنوان و توضیحات را کامل کنید.'); return; }
+
+            const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(t => t) : [];
+
+            const item = { 
+                id: Date.now(), 
+                title, 
+                desc, 
+                tags, 
+                rating: 0,
+                date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'})
+            };
+            
+            saveToLocalStorage(type, item);
+            
+            // انیمیشن جایگزینی: همه کارت‌ها محو می‌شوند (فقط برای زیبایی)
+            const cards = listContainer.querySelectorAll('.note-card');
+            cards.forEach(card => {
+                card.classList.add('fade-out');
+            });
+
+            // بعد از انیمیشن محو شدن، کارت جدید را اضافه کن (بدون پاک کردن لیست)
+            setTimeout(() => {
+                // کارت جدید را اضافه کن
+                renderItem(type, item, listContainer);
+                updateStats(type);
+                showPopularTags(type);
+                
+                // بعد از اضافه شدن کارت جدید، انیمیشن محو شدن را از همه بردار تا دوباره ظاهر شوند
+                cards.forEach(card => {
+                    card.classList.remove('fade-out');
+                });
+            }, 300); // 300ms زمان انیمیشن fade-out
+            
+            // Clear inputs and auto-save
+            titleInput.value = '';
+            tagsInput.value = '';
+            descInput.value = '';
+            localStorage.removeItem(autoSaveKeys[type] + '-title');
+            localStorage.removeItem(autoSaveKeys[type] + '-tags');
+            localStorage.removeItem(autoSaveKeys[type] + '-desc');
+        }
+
+        function renderItem(type, item, container) {
+            const el = document.createElement('div');
+            el.className = 'note-card';
+            el.setAttribute('data-id', item.id);
+            el.setAttribute('data-title', item.title.toLowerCase());
+            el.setAttribute('data-desc', item.desc.toLowerCase());
+            el.setAttribute('data-tags', item.tags.join(' ').toLowerCase());
+
+            let icon = 'fa-book';
+            if (type === 'movies') icon = 'fa-film';
+            if (type === 'theater') icon = 'fa-theater-masks';
+
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                const active = i <= item.rating ? 'active' : '';
+                stars += `<i class="fas fa-star star ${active}" onclick="rateItem('${type}', ${item.id}, ${i})"></i>`;
+            }
+
+            let tagsHtml = item.tags.map(tag => `<span class="tag">#${tag}</span>`).join('');
+
+            el.innerHTML = `
+                <div class="note-header">
+                    <div class="note-title"><i class="fas ${icon}"></i> ${item.title}</div>
+                    <div class="card-actions">
+                        <button class="action-btn" onclick="copyText('${item.title}', '${item.desc}')" title="کپی متن">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="action-btn delete" onclick="deleteItem('${type}', ${item.id})" title="حذف آیتم">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="note-desc">${item.desc}</div>
+                <div class="tags-container">${tagsHtml}</div>
+                <div class="note-meta">
+                    <span><i class="far fa-clock"></i> ${item.date}</span>
+                    <div class="rating-container">${stars}</div>
+                </div>
+            `;
+            container.prepend(el);
+        }
+
+        function copyText(title, desc) {
+            const text = `${title}\n\n${desc}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('متن کپی شد! 📋');
+            }).catch(err => {
+                console.error('خطا در کپی:', err);
+            });
+        }
+
+        function rateItem(type, id, rating) {
+            let items = getItems(type);
+            const idx = items.findIndex(i => i.id === id);
+            if (idx !== -1) {
+                items[idx].rating = rating;
+                localStorage.setItem(type + 'List', JSON.stringify(items));
+                const container = document.getElementById(type + '-list');
+                container.innerHTML = '';
+                items.forEach(i => renderItem(type, i, container));
+                updateStats(type);
+            }
+        }
+
+        function saveToLocalStorage(type, item) {
+            let items = getItems(type);
+            items.push(item);
+            localStorage.setItem(type + 'List', JSON.stringify(items));
+        }
+
+        function getItems(type) {
+            const data = localStorage.getItem(type + 'List');
+            return data ? JSON.parse(data) : [];
+        }
+
+        function loadItems(type, containerId) {
+            const items = getItems(type);
+            const container = document.getElementById(containerId);
+            if (items.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-pen-nib"></i><p>تجربه هنری</p></div>`;
+            } else {
+                items.forEach(i => renderItem(type, i, container));
+            }
+        }
+
+        function deleteItem(type, id) {
+            if (!confirm('آیا مطمئن هستید؟')) return;
+            let items = getItems(type);
+            items = items.filter(i => i.id !== id);
+            localStorage.setItem(type + 'List', JSON.stringify(items));
+            
+            const el = document.querySelector(`[data-id="${id}"]`);
+            if (el) el.remove();
+
+            if (items.length === 0) {
+                const container = document.getElementById(type + '-list');
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-pen-nib"></i><p>تجربه هنری</p></div>`;
+            }
+            updateStats(type);
+            showPopularTags(type);
+        }
+
+        function updateStats(type) {
+            const items = getItems(type);
+            const countSpan = document.getElementById(type + '-count');
+            const avgSpan = document.getElementById(type + '-avg');
+            
+            if (countSpan) countSpan.innerText = items.length;
+            
+            if (avgSpan) {
+                if (items.length === 0) {
+                    avgSpan.innerText = '0';
+                } else {
+                    const totalRating = items.reduce((sum, item) => sum + item.rating, 0);
+                    const avg = (totalRating / items.length).toFixed(1);
+                    avgSpan.innerText = avg;
+                }
+            }
+        }
+
+        function showPopularTags(type) {
+            const items = getItems(type);
+            const tagCounts = {};
+            
+            items.forEach(item => {
+                item.tags.forEach(tag => {
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                });
+            });
+
+            const sortedTags = Object.entries(tagCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5); // Top 5 tags
+
+            const container = document.getElementById(type + '-tags-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            if (sortedTags.length > 0) {
+                container.innerHTML = '<span style="font-size:0.8rem; color:var(--text-secondary); margin-left:10px;">پربازدیدترین‌ها:</span>';
+                sortedTags.forEach(([tag, count]) => {
+                    const tagEl = document.createElement('span');
+                    tagEl.className = 'tag';
+                    tagEl.innerText = `#${tag} (${count})`;
+                    tagEl.onclick = () => filterByTag(type, tag);
+                    tagEl.style.cursor = 'pointer';
+                    container.appendChild(tagEl);
+                });
+            }
+        }
+
+        function filterByTag(type, tag) {
+            const query = tag.toLowerCase();
+            const container = document.getElementById(type + '-list');
+            const cards = container.querySelectorAll('.note-card');
+
+            cards.forEach(card => {
+                const tags = card.getAttribute('data-tags');
+                if (tags.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Reset search input
+            document.getElementById('search-input').value = '';
+        }
+
+        function filterItems() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const activeTab = document.querySelector('.tab-btn.active').getAttribute('onclick').match(/'([^']+)'/)[1];
+            const container = document.getElementById(activeTab + '-list');
+            const cards = container.querySelectorAll('.note-card');
+
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                const desc = card.getAttribute('data-desc');
+                const tags = card.getAttribute('data-tags');
+                
+                if (title.includes(query) || desc.includes(query) || tags.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function exportPDF() {
+            const activeTab = document.querySelector('.tab-btn.active').getAttribute('onclick').match(/'([^']+)'/)[1];
+            const container = document.getElementById(activeTab + '-list');
+            const cards = container.querySelectorAll('.note-card');
+            
+            if (cards.length === 0) {
+                alert('لیست خالی است!');
+                return;
+            }
+
+            const pdfContent = document.getElementById('pdf-container');
+            pdfContent.innerHTML = `
+                <div style="font-family: Tahoma, sans-serif; padding: 20px; color: #333;">
+                    <h1 style="color: #b8962e; text-align: center; border-bottom: 2px solid #b8962e; padding-bottom: 10px;">کتاب باز - ${activeTab === 'books' ? 'کتاب‌ها' : activeTab === 'movies' ? 'فیلم‌ها' : 'تئاترها'}</h1>
+                    <div style="margin-top: 20px;">
+                        ${Array.from(cards).map(card => `
+                            <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; border-right: 4px solid #b8962e;">
+                                <h3 style="margin: 0 0 10px 0; color: #333;">${card.querySelector('.note-title').innerText}</h3>
+                                <p style="margin: 0; color: #666; line-height: 1.6;">${card.querySelector('.note-desc').innerText}</p>
+                                <div style="margin-top: 5px; font-size: 0.9rem; color: #888;">${card.querySelector('.note-meta').innerText}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            pdfContent.style.display = 'block';
+
+            const opt = {
+                margin: 1,
+                filename: `کتاب-باز-${activeTab}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(pdfContent).save().then(() => {
+                pdfContent.style.display = 'none';
+                pdfContent.innerHTML = '';
+            });
+        }
+    </script>
+</body>
+</html>
